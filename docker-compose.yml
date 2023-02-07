@@ -1,0 +1,56 @@
+#Docker-compose del projecte2 Ivan Ferrer & Yago Gutierrez:
+version: '3.7'
+services:
+#Començem amb el servei mariadb:
+  mariadb:
+    image: mariadb:latest
+    volumes:
+        - /var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: dev
+      MYSQL_USER: dev
+      MYSQL_PASSWORD: dev 
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - 3306:3306
+#Seguim amb el phpmyadmin:
+  phpmyadmin: #Indicam el contenidor en el que volem que es basi el servei:
+    image: phpmyadmin/phpmyadmin:latest
+    environment:
+      PMA_ARBITRARY: 1
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: root
+    ports:
+        - 8091:80
+#Servei dev enllaçat amb el Dockerfile que tenim creat:     
+  dev:
+    build: 
+      context: ./Dockerfile 
+    ports:
+      - 8081:8080
+      - 2222:22
+    volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+        - /var/lib/docker:/var/lib/docker   
+    
+#Servei devops:   
+  devops:
+    image: jenkins/jenkins:lts-jdk11 
+    ports: 
+        - 8011:8080 
+        - 50000:50000 
+    volumes: 
+        - /var/run/docker.sock:/var/run/docker.sock     
+    environment:
+        - Djenkins.install.runSetupWizard=false 
+    command: /usr/local/bin/jenkins.sh 
+        --httpPort=80
+        --javahome=/usr/java/
+        --httpListenAddress=0.0.0.0 
+        --ajp13ListenAddress=0.0.0.0 
+        --prefix=devops
+        --argumentsRealm.global.roles=anonymous 
+        --disable-cli
