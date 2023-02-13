@@ -27,7 +27,7 @@ services:
         - 8091:80
 #Servei dev enllaçat amb el Dockerfile que tenim creat:     
   dev:
-    image: ivanferrer/projecte2 
+    image: ivanferrer/projecte2 #Hem de fer el pull del dockerfile docker -> push ivanferrer/projecte2:tagname
     ports:
       - 8081:8080
       - 2222:22
