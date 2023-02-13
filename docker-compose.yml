@@ -1,14 +1,14 @@
 #Docker-compose del projecte2 Ivan Ferrer & Yago Gutierrez:
 version: '3.7'
 services:
-#Començem amb el servei mariadb:
-  mariadb:
-    image: mariadb:latest
+#Començem amb el servei mysql:
+  mysql:
+    image: mysql
     volumes:
         - /var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: dev
+      MYSQL_DATABASE: DevDB
       MYSQL_USER: dev
       MYSQL_PASSWORD: dev 
     command: --default-authentication-plugin=mysql_native_password
