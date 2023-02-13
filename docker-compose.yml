@@ -27,8 +27,7 @@ services:
         - 8091:80
 #Servei dev enllaçat amb el Dockerfile que tenim creat:     
   dev:
-    build: 
-      context: ./Dockerfile 
+    image: ivanferrer/projecte2 
     ports:
       - 8081:8080
       - 2222:22
